@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from PySide6.QtWidgets import QTabWidget, QPlainTextEdit
+from PySide6.QtGui import QTextCursor
 
 from notenest.notes_folder import NotesFolder
 from notenest.autosave import SaveTracker
@@ -59,3 +60,15 @@ class EditorTabs(QTabWidget):
 
     def _close_tab(self, index: int) -> None:
         self.removeTab(index)
+
+    def goto_line(self, path: Path, line_number: int) -> None:
+        self.open_note(path)
+        editor = self.currentWidget()
+        if not editor:
+            return
+        line_number = max(1, line_number)
+        cursor = QTextCursor(editor.document())
+        cursor.movePosition(QTextCursor.MoveOperation.Start)
+        cursor.movePosition(QTextCursor.MoveOperation.Down, n=line_number - 1)
+        editor.setTextCursor(cursor)
+        editor.ensureCursorVisible()

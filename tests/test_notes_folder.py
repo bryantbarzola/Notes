@@ -42,3 +42,12 @@ def test_create_note_returns_existing_without_clobber(tmp_path):
     (tmp_path / "keep.md").write_text("original")
     p = folder.create_note("keep")
     assert p.read_text() == "original"
+
+
+def test_list_notes_case_insensitive_extensions(tmp_path):
+    (tmp_path / "upper.MD").write_text("a")
+    (tmp_path / "mixed.TxT").write_text("b")
+    (tmp_path / "lower.md").write_text("c")
+    folder = NotesFolder(tmp_path)
+    names = [p.name for p in folder.list_notes()]
+    assert sorted(names) == ["lower.md", "mixed.TxT", "upper.MD"]

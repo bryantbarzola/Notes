@@ -51,3 +51,15 @@ def test_editing_marks_dirty_and_titles_show_dot(app, tmp_path):
     assert tabs.tabText(0).endswith("•")
     tabs.mark_tab_saved(note)
     assert not tabs.tabText(0).endswith("•")
+
+
+def test_goto_line_moves_cursor_to_target_line(app, tmp_path):
+    note = tmp_path / "multi.md"
+    note.write_text("line 1\nline 2\nline 3\nline 4")
+    folder = NotesFolder(tmp_path)
+    tracker = SaveTracker(lambda p, c: None)
+    tabs = EditorTabs(folder, tracker)
+    tabs.goto_line(note, 3)
+    editor = tabs.currentWidget()
+    assert editor.textCursor().blockNumber() == 2  # 0-based: line 3 is block 2
+    assert tabs.current_path() == note

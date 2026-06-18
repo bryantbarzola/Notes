@@ -116,10 +116,13 @@ class MainWindow(QMainWindow):
         for m in self.run_search(self.search_box.text()):
             item = QListWidgetItem(f"{m.path.name}:{m.line_number}  {m.preview}")
             item.setData(Qt.UserRole, str(m.path))
+            item.setData(Qt.UserRole + 1, m.line_number)
             self.search_results.addItem(item)
 
     def _on_result_click(self, item: QListWidgetItem) -> None:
-        self.tabs.open_note(Path(item.data(Qt.UserRole)))
+        path = Path(item.data(Qt.UserRole))
+        line_number = item.data(Qt.UserRole + 1)
+        self.tabs.goto_line(path, line_number)
 
     def closeEvent(self, event) -> None:
         self.tracker.flush_all()
