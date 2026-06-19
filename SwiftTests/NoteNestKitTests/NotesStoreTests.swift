@@ -85,3 +85,44 @@ private func tempFolder() -> URL {
     #expect(content1 == "First note content")
     #expect(content2 == "Second note content")
 }
+
+@MainActor
+@Test func mostRecentEmptyReturnsNilWhenAllHaveContent() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create()
+    store.updateContent(of: a.id, to: "has content")
+    #expect(store.mostRecentEmptyNote() == nil)
+}
+
+@MainActor
+@Test func mostRecentEmptyReturnsAnEmptyNote() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create()  // empty by default
+    #expect(store.mostRecentEmptyNote()?.id == a.id)
+}
+
+@MainActor
+@Test func mostRecentEmptyTreatsWhitespaceAsEmpty() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create()
+    store.updateContent(of: a.id, to: "   \n\t  ")
+    #expect(store.mostRecentEmptyNote()?.id == a.id)
+}
+
+@MainActor
+@Test func mostRecentEmptyPicksNewestEmptyAmongMixed() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    // create() inserts at front, so the LAST created is newest (index 0).
+    let older = store.create()
+    store.updateContent(of: older.id, to: "content")
+    let newerEmpty = store.create()  // empty, now at front
+    #expect(store.mostRecentEmptyNote()?.id == newerEmpty.id)
+}

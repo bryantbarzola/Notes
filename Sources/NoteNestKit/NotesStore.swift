@@ -73,6 +73,10 @@ public final class NotesStore: ObservableObject {
         try? fm.removeItem(at: url)
         notes.remove(at: idx)
     }
+
+    public func mostRecentEmptyNote() -> Note? {
+        notes.first { $0.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+    }
 }
 
 private func fm_home() -> URL {
