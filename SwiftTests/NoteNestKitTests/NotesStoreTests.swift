@@ -65,3 +65,23 @@ private func tempFolder() -> URL {
     #expect(store.notes.count == 1)
     #expect(store.notes.first?.filename == "a.md")
 }
+
+@MainActor @Test func saveAllPersistsAllInMemoryNotes() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+
+    let note1 = store.create()
+    let note2 = store.create()
+
+    store.updateContent(of: note1.id, to: "First note content")
+    store.updateContent(of: note2.id, to: "Second note content")
+
+    store.saveAll()
+
+    let content1 = try? String(contentsOf: folder.appendingPathComponent(note1.filename), encoding: .utf8)
+    let content2 = try? String(contentsOf: folder.appendingPathComponent(note2.filename), encoding: .utf8)
+
+    #expect(content1 == "First note content")
+    #expect(content2 == "Second note content")
+}

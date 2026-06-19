@@ -60,6 +60,13 @@ public final class NotesStore: ObservableObject {
         try? note.content.write(to: url, atomically: true, encoding: .utf8)
     }
 
+    public func saveAll() {
+        for note in notes {
+            let url = folder.appendingPathComponent(note.filename)
+            try? note.content.write(to: url, atomically: true, encoding: .utf8)
+        }
+    }
+
     public func delete(_ id: String) {
         guard let idx = notes.firstIndex(where: { $0.id == id }) else { return }
         let url = folder.appendingPathComponent(notes[idx].filename)

@@ -1,13 +1,15 @@
 import SwiftUI
 
 public struct ContentView: View {
-    @StateObject private var store = NotesStore(folder: NotesStore.defaultFolder())
+    @ObservedObject private var store: NotesStore
     @State private var selection: String?
     @State private var pendingDeleteID: String?
     @State private var showDeleteConfirm = false
     private let saveDebouncer = Debouncer(interval: 0.8)
 
-    public init() {}
+    public init(store: NotesStore) {
+        self.store = store
+    }
 
     private var editorText: Binding<String> {
         Binding(
@@ -96,8 +98,6 @@ public struct ContentView: View {
     }
 
     public func flushSaves() {
-        if let id = selection {
-            store.save(id)
-        }
+        store.saveAll()
     }
 }
