@@ -8,14 +8,14 @@ private func tempFolder() -> URL {
     return url
 }
 
-@Test func ensureFolderCreatesIt() {
+@MainActor @Test func ensureFolderCreatesIt() {
     let folder = tempFolder()
     let store = NotesStore(folder: folder)
     store.ensureFolderExists()
     #expect(FileManager.default.fileExists(atPath: folder.path))
 }
 
-@Test func createWritesFileAndInsertsAtFront() {
+@MainActor @Test func createWritesFileAndInsertsAtFront() {
     let folder = tempFolder()
     let store = NotesStore(folder: folder)
     store.ensureFolderExists()
@@ -25,7 +25,7 @@ private func tempFolder() -> URL {
     #expect(FileManager.default.fileExists(atPath: folder.appendingPathComponent(note.filename).path))
 }
 
-@Test func saveWritesContentToDisk() {
+@MainActor @Test func saveWritesContentToDisk() {
     let folder = tempFolder()
     let store = NotesStore(folder: folder)
     store.ensureFolderExists()
@@ -36,7 +36,7 @@ private func tempFolder() -> URL {
     #expect(onDisk == "Hello world")
 }
 
-@Test func updateContentRecomputesTitleInMemory() {
+@MainActor @Test func updateContentRecomputesTitleInMemory() {
     let folder = tempFolder()
     let store = NotesStore(folder: folder)
     store.ensureFolderExists()
@@ -45,7 +45,7 @@ private func tempFolder() -> URL {
     #expect(store.notes.first?.title == "My Title")
 }
 
-@Test func deleteRemovesFileAndNote() {
+@MainActor @Test func deleteRemovesFileAndNote() {
     let folder = tempFolder()
     let store = NotesStore(folder: folder)
     store.ensureFolderExists()
@@ -55,7 +55,7 @@ private func tempFolder() -> URL {
     #expect(!FileManager.default.fileExists(atPath: folder.appendingPathComponent(note.filename).path))
 }
 
-@Test func reloadOnlyReadsMarkdownFiles() {
+@MainActor @Test func reloadOnlyReadsMarkdownFiles() {
     let folder = tempFolder()
     try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
     try? "note".write(to: folder.appendingPathComponent("a.md"), atomically: true, encoding: .utf8)

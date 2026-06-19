@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 
+@MainActor
 public final class NotesStore: ObservableObject {
     @Published public private(set) var notes: [Note] = []
     private let folder: URL
