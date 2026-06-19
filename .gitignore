@@ -8,3 +8,4 @@ logs/
 .build/
 NoteNest.app/
 *.xcodeproj
+.worktrees/
