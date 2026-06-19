@@ -85,3 +85,102 @@ private func tempFolder() -> URL {
     #expect(content1 == "First note content")
     #expect(content2 == "Second note content")
 }
+
+@MainActor
+@Test func mostRecentEmptyReturnsNilWhenAllHaveContent() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create()
+    store.updateContent(of: a.id, to: "has content")
+    #expect(store.mostRecentEmptyNote() == nil)
+}
+
+@MainActor
+@Test func mostRecentEmptyReturnsAnEmptyNote() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create()  // empty by default
+    #expect(store.mostRecentEmptyNote()?.id == a.id)
+}
+
+@MainActor
+@Test func mostRecentEmptyTreatsWhitespaceAsEmpty() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create()
+    store.updateContent(of: a.id, to: "   \n\t  ")
+    #expect(store.mostRecentEmptyNote()?.id == a.id)
+}
+
+@MainActor
+@Test func mostRecentEmptyPicksNewestEmptyAmongMixed() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    // create() inserts at front, so the LAST created is newest (index 0).
+    let older = store.create()
+    store.updateContent(of: older.id, to: "content")
+    let newerEmpty = store.create()  // empty, now at front
+    #expect(store.mostRecentEmptyNote()?.id == newerEmpty.id)
+}
+
+@MainActor
+@Test func neighborAfterMiddleIsNextNote() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    // create() inserts at front, so after these three calls order is [c, b, a].
+    let a = store.create(); store.updateContent(of: a.id, to: "a")
+    let b = store.create(); store.updateContent(of: b.id, to: "b")
+    let c = store.create(); store.updateContent(of: c.id, to: "c")
+    // notes == [c, b, a]; deleting b (index 1) should select the note now at
+    // index 1, which is a.
+    #expect(store.neighborID(after: b.id) == a.id)
+}
+
+@MainActor
+@Test func neighborAfterLastIsPreviousNote() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create(); store.updateContent(of: a.id, to: "a")
+    let b = store.create(); store.updateContent(of: b.id, to: "b")
+    // notes == [b, a]; a is last → deleting a selects the new last, b.
+    #expect(store.neighborID(after: a.id) == b.id)
+}
+
+@MainActor
+@Test func neighborOfOnlyNoteIsNil() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create()
+    #expect(store.neighborID(after: a.id) == nil)
+}
+
+@MainActor
+@Test func createOrReuseReturnsExistingEmptyWithoutGrowing() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let empty = store.create()  // empty
+    let before = store.notes.count
+    let reused = store.createOrReuseEmpty()
+    #expect(reused.id == empty.id)
+    #expect(store.notes.count == before)  // did not create another
+}
+
+@MainActor
+@Test func createOrReuseCreatesWhenNoEmptyExists() {
+    let folder = tempFolder()
+    let store = NotesStore(folder: folder)
+    store.ensureFolderExists()
+    let a = store.create(); store.updateContent(of: a.id, to: "content")
+    let before = store.notes.count
+    let made = store.createOrReuseEmpty()
+    #expect(made.id != a.id)
+    #expect(store.notes.count == before + 1)
+}

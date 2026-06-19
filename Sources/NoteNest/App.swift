@@ -7,6 +7,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         onTerminate?()
     }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        // Returning true tells AppKit to perform its default reopen
+        // (bring existing windows to the front). We intentionally do NOT
+        // create a new note here — new notes are made with ⌘N.
+        return true
+    }
 }
 
 @main
@@ -34,6 +41,7 @@ struct NoteNestApp: App {
                 .preferredColorScheme(.dark)
                 .frame(minWidth: 400, minHeight: 300)
         }
+        .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 900, height: 600)
         .onChange(of: scenePhase) { _, phase in
             if phase != .active {

@@ -74,12 +74,20 @@ public struct ContentView: View {
         store.reload()
         if store.notes.isEmpty {
             store.create()
+        } else if let empty = store.mostRecentEmptyNote() {
+            // Reuse an existing blank note instead of creating another,
+            // so launching repeatedly doesn't litter ~/Notes with empties.
+            selection = empty.id
+            return
+        } else {
+            store.create()
         }
         selection = store.notes.first?.id
     }
 
     private func newNote() {
-        let note = store.create()
+        // Reuse an existing blank note instead of stacking new empties.
+        let note = store.createOrReuseEmpty()
         selection = note.id
     }
 
@@ -90,9 +98,16 @@ public struct ContentView: View {
 
     private func confirmDelete() {
         guard let id = pendingDeleteID else { return }
+        // Compute the neighbor BEFORE deleting, so we can land on it after.
+        let neighbor = store.neighborID(after: id)
         store.delete(id)
         if selection == id {
-            selection = store.notes.first?.id
+            if let neighbor {
+                selection = neighbor
+            } else {
+                // No notes left — create a fresh one so the editor is never empty.
+                selection = store.create().id
+            }
         }
         pendingDeleteID = nil
     }
