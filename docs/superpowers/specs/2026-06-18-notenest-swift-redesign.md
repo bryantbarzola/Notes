@@ -69,6 +69,7 @@ notes app, not a code editor.
 ### Launch
 - On launch: open the most recently modified note. If `~/Notes` is empty,
   create one fresh note and open it.
+- Window opens at a sensible default size (~900×600) and is resizable.
 
 ### Sidebar
 - Lists all notes by title, most-recently-modified first.
@@ -172,7 +173,9 @@ sidebar live. On quit, the app flushes any pending save.
 ## Migration Notes
 
 - The Python implementation (`src/notenest/`, `tests/`, `run.sh`,
-  `requirements.txt`, `pytest.ini`, `.venv`) is replaced by this Swift app.
-  Removal/retirement of the Python code is handled in the implementation plan.
+  `requirements.txt`, `pytest.ini`, `.venv`) is **deleted** once the Swift app
+  works. The implementation plan handles removal as an explicit step (after the
+  Swift app is verified, so we never delete working code before its replacement
+  is confirmed). Git history retains the Python version if ever needed.
 - Existing `.md` files in `~/Notes` remain readable (the app reads any `.md`;
   the first line becomes the title regardless of how the file was named).
