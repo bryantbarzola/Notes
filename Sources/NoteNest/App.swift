@@ -41,6 +41,7 @@ struct NoteNestApp: App {
                 .preferredColorScheme(.dark)
                 .frame(minWidth: 400, minHeight: 300)
         }
+        .windowStyle(.hiddenTitleBar)
         .defaultSize(width: 900, height: 600)
         .onChange(of: scenePhase) { _, phase in
             if phase != .active {
