@@ -160,6 +160,21 @@ sidebar live. On quit, the app flushes any pending save.
   flows, launch-into-recent-note, and empty-folder first launch. (Given the
   previous UI issues, manual run-and-look is an explicit, required step.)
 
+## Deferred to Enhancement Phase
+
+The following were intentionally deferred after the initial Swift MVP shipped
+(decided 2026-06-19):
+
+- **First line rendered larger as a title** (Key Decision 5 / Editor section).
+  The MVP uses a single `TextEditor` with a uniform body font, so the first
+  line is not visually larger. Implementing this needs a richer text view
+  (`NSViewRepresentable` over `NSTextView`, or an `AttributedString`-based
+  editor). `Theme.titleFontSize` is reserved for this. To be done in the
+  enhancement phase.
+- **Minor dead code** (`Theme.accent`, `Theme.titleFontSize`,
+  `Debouncer.flushCancel`) — left in place because the title-styling and
+  selection-highlight enhancements will consume them.
+
 ## Out of Scope (YAGNI)
 
 - Search across notes (deferred to a later version)
