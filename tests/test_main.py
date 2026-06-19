@@ -72,3 +72,17 @@ def test_save_on_quit_persists_changes(app, tmp_path):
     window.tabs.currentWidget().setPlainText("edited on close")
     window.close()
     assert note.read_text() == "edited on close"
+
+
+def test_open_initial_note_creates_note_when_empty(app, tmp_path):
+    window = MainWindow(NotesFolder(tmp_path))
+    assert window.tabs.count() == 1
+    assert (tmp_path / "untitled.md").exists()
+
+
+def test_open_initial_note_opens_existing_first_note(app, tmp_path):
+    (tmp_path / "a.md").write_text("first")
+    (tmp_path / "b.md").write_text("second")
+    window = MainWindow(NotesFolder(tmp_path))
+    assert window.tabs.count() == 1
+    assert window.tabs.current_path().name == "a.md"

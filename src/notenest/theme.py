@@ -18,6 +18,13 @@ def stylesheet() -> str:
         color: {FOREGROUND};
         border: none;
     }}
+    QPlainTextEdit {{
+        padding-left: 8px;
+        padding-top: 4px;
+    }}
+    QListWidget {{
+        border-right: 1px solid {ACCENT};
+    }}
     QTabBar::tab {{
         background: {BACKGROUND};
         color: {FOREGROUND};

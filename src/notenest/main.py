@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
         self.tracker = SaveTracker(self.folder.write)
 
         self.sidebar = QListWidget()
+        self.sidebar.setFixedWidth(200)
         self.sidebar.itemClicked.connect(self._on_sidebar_click)
 
         self.tabs = EditorTabs(self.folder, self.tracker)
@@ -45,8 +46,8 @@ class MainWindow(QMainWindow):
 
         central = QWidget()
         layout = QHBoxLayout(central)
-        layout.addWidget(left, 1)
-        layout.addWidget(self.tabs, 3)
+        layout.addWidget(left, 0)
+        layout.addWidget(self.tabs, 1)
         self.setCentralWidget(central)
 
         self.status = self.statusBar()
@@ -65,6 +66,14 @@ class MainWindow(QMainWindow):
         QShortcut(QKeySequence("Meta+Shift+F"), self, self._toggle_search)
 
         self.refresh_sidebar()
+        self.open_initial_note()
+
+    def open_initial_note(self) -> None:
+        notes = self.folder.list_notes()
+        if not notes:
+            self.new_note()
+        else:
+            self.tabs.open_note(notes[0])
 
     def _update_status(self, text: str) -> None:
         self.status.showMessage(f"{self.folder.path} · {text}")
