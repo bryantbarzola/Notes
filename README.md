@@ -1,25 +1,28 @@
 # NoteNest
 
-A lightweight, self-built notes app for macOS. Daily work notes with tabs,
-dark mode, auto-save, and search across all notes.
+A lightweight, self-built native macOS notes app for daily work notes.
+Sidebar list, one note at a time, dark mode, silent autosave. Built with
+Swift + SwiftUI.
 
-## Setup
+## Notes
+Notes are plain `.md` files in `~/Notes` (created automatically). A note's
+title in the sidebar is its first line of text.
 
-    python3 -m venv .venv
-    .venv/bin/pip install -r requirements.txt
+## Build & run
 
-## Run
+    ./scripts/build-app.sh
 
-    ./run.sh
+This builds a release binary, wraps it in `NoteNest.app`, and opens it.
 
-Notes live in `~/Notes` (created automatically).
+## Develop
+
+    swift build      # compile
+    swift test       # run unit tests
 
 ## Shortcuts
+- `⌘N` — new note
+- `⌘⌫` — delete selected note (with confirmation)
 
-- `Cmd+S` — save current note
-- `Cmd+N` — new note
-- `Cmd+Shift+F` — search across all notes
-
-## Test
-
-    .venv/bin/pytest
+## Scope
+Daily notes only — no tabs, no search (yet), no markdown preview. See
+`docs/superpowers/specs/2026-06-18-notenest-swift-redesign.md`.
