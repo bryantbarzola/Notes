@@ -7,6 +7,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(_ notification: Notification) {
         onTerminate?()
     }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        // Returning true tells AppKit to perform its default reopen
+        // (bring existing windows to the front). We intentionally do NOT
+        // create a new note here — new notes are made with ⌘N.
+        return true
+    }
 }
 
 @main

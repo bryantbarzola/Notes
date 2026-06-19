@@ -74,6 +74,13 @@ public struct ContentView: View {
         store.reload()
         if store.notes.isEmpty {
             store.create()
+        } else if let empty = store.mostRecentEmptyNote() {
+            // Reuse an existing blank note instead of creating another,
+            // so launching repeatedly doesn't litter ~/Notes with empties.
+            selection = empty.id
+            return
+        } else {
+            store.create()
         }
         selection = store.notes.first?.id
     }
