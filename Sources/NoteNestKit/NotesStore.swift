@@ -77,6 +77,25 @@ public final class NotesStore: ObservableObject {
     public func mostRecentEmptyNote() -> Note? {
         notes.first { $0.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     }
+
+    public func neighborID(after id: String) -> String? {
+        guard let idx = notes.firstIndex(where: { $0.id == id }) else { return nil }
+        if idx + 1 < notes.count {
+            return notes[idx + 1].id   // the note that slides into this slot
+        } else if idx - 1 >= 0 {
+            return notes[idx - 1].id   // deleting the last → new last
+        } else {
+            return nil                 // it was the only note
+        }
+    }
+
+    @discardableResult
+    public func createOrReuseEmpty() -> Note {
+        if let empty = mostRecentEmptyNote() {
+            return empty
+        }
+        return create()
+    }
 }
 
 private func fm_home() -> URL {
