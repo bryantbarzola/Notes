@@ -19,6 +19,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct NoteNestApp: App {
     @Environment(\.scenePhase) private var scenePhase
+    @AppStorage("showTabBar") private var showTabBar: Bool = false
     @StateObject private var store = NotesStore(folder: NotesStore.defaultFolder())
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
@@ -36,8 +37,8 @@ struct NoteNestApp: App {
             }
         }()
 
-        return WindowGroup {
-            ContentView(store: store)
+        WindowGroup {
+            ContentView(store: store, showTabBar: showTabBar)
                 .preferredColorScheme(.dark)
                 .frame(minWidth: 400, minHeight: 300)
         }
@@ -47,6 +48,11 @@ struct NoteNestApp: App {
             if phase != .active {
                 store.saveAll()
             }
+        }
+
+        Settings {
+            SettingsView()
+                .preferredColorScheme(.dark)
         }
     }
 }
