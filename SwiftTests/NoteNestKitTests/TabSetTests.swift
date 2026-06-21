@@ -48,3 +48,10 @@ import Testing
     t.clear()
     #expect(t.ids.isEmpty)
 }
+
+@Test func closeIdNotInSetLeavesIdsUnchanged() {
+    var t = TabSet(ids: ["a", "b"])
+    let next = t.close("zzz", active: "a")
+    #expect(t.ids == ["a", "b"])   // nothing removed
+    #expect(next == "a")            // active unchanged
+}

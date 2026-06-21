@@ -131,6 +131,10 @@ public struct ContentView: View {
         // Compute the neighbor BEFORE deleting, so we can land on it after.
         let neighbor = store.neighborID(after: id)
         store.delete(id)
+        // Drop the deleted note's tab so no orphan ("Untitled") tab remains.
+        if showTabBar {
+            _ = tabSet.close(id, active: nil)
+        }
         if selection == id {
             if let neighbor {
                 selection = neighbor
