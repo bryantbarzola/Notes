@@ -3,8 +3,6 @@ import SwiftUI
 public struct ContentView: View {
     @ObservedObject private var store: NotesStore
     @State private var selection: String?
-    @State private var pendingDeleteID: String?
-    @State private var showDeleteConfirm = false
     @State private var tabSet = TabSet()
     private let showTabBar: Bool
     private let saveDebouncer = Debouncer(interval: 0.8)
@@ -38,7 +36,7 @@ public struct ContentView: View {
                 store: store,
                 selection: $selection,
                 onNew: newNote,
-                onDelete: requestDelete
+                onDelete: performDelete
             )
             .frame(minWidth: 180)
         } detail: {
@@ -80,19 +78,11 @@ public struct ContentView: View {
                 tabSet.clear()
             }
         }
-        .confirmationDialog(
-            "Delete this note?",
-            isPresented: $showDeleteConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Delete", role: .destructive, action: confirmDelete)
-            Button("Cancel", role: .cancel) {}
-        }
         // Hidden buttons provide the keyboard shortcuts.
         .background(
             Group {
                 Button("", action: newNote).keyboardShortcut("n", modifiers: .command)
-                Button("") { if let id = selection { requestDelete(id) } }
+                Button("") { if let id = selection { performDelete(id) } }
                     .keyboardShortcut(.delete, modifiers: .command)
             }
             .opacity(0)
@@ -121,13 +111,8 @@ public struct ContentView: View {
         selection = note.id
     }
 
-    private func requestDelete(_ id: String) {
-        pendingDeleteID = id
-        showDeleteConfirm = true
-    }
-
-    private func confirmDelete() {
-        guard let id = pendingDeleteID else { return }
+    private func performDelete(_ id: String) {
+        // Deletes immediately (no confirmation) — consistent with closing a tab.
         // Compute the neighbor BEFORE deleting, so we can land on it after.
         let neighbor = store.neighborID(after: id)
         store.delete(id)
@@ -143,7 +128,6 @@ public struct ContentView: View {
                 selection = store.create().id
             }
         }
-        pendingDeleteID = nil
     }
 
     public func flushSaves() {
