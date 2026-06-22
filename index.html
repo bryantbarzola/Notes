@@ -46,10 +46,9 @@
       background: var(--panel);
       border: 1px solid #313641;
       border-radius: 10px;
-      aspect-ratio: 16 / 10;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); font-size: 0.9rem; text-align: center;
+      padding: 12px;
     }
+    .shot img { width: 100%; height: auto; display: block; border-radius: 6px; }
     .features { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; }
     .features li { padding-left: 22px; position: relative; }
     .features li::before { content: "▸"; color: var(--accent); position: absolute; left: 0; }
@@ -76,7 +75,7 @@
   <main class="wrap">
     <section>
       <h2>Screenshots</h2>
-      <div class="shot">Screenshot coming soon</div>
+      <div class="shot"><img src="assets/screenshot-1.png" alt="NoteNest showing the sidebar, tab bar, and a note open in the editor"></div>
     </section>
 
     <section>
