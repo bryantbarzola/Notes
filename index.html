@@ -3,10 +3,117 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NoteNest - a lightweight native macOS notes app</title>
+  <title>NoteNest — a lightweight native macOS notes app</title>
+  <meta name="description" content="NoteNest is a lightweight, native macOS notes app built from scratch in Swift. Sidebar, tabs, dark Andromeda theme, autosave.">
+  <link rel="icon" href="assets/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #262a33;
+      --panel: #1d2027;
+      --accent: #264f78;
+      --text: #d4d4d4;
+      --muted: #8a8f99;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "JetBrains Mono", ui-monospace, Menlo, monospace;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    a { color: #7aa2f7; }
+    header.hero {
+      text-align: center;
+      padding: 72px 24px 48px;
+    }
+    .hero img { width: 96px; height: 96px; border-radius: 20px; }
+    .hero h1 { font-size: 2.4rem; margin: 16px 0 8px; font-weight: 700; }
+    .hero p.tagline { color: var(--muted); font-size: 1.1rem; margin: 0 auto; max-width: 30em; }
+    .cta {
+      display: inline-block; margin-top: 28px; padding: 12px 22px;
+      background: var(--accent); color: #fff; text-decoration: none;
+      border-radius: 8px; font-weight: 600;
+    }
+    section { padding: 40px 0; border-top: 1px solid var(--panel); }
+    section h2 { font-size: 1.4rem; font-weight: 700; margin: 0 0 20px; }
+    .shot {
+      background: var(--panel);
+      border: 1px solid #313641;
+      border-radius: 10px;
+      aspect-ratio: 16 / 10;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.9rem; text-align: center;
+    }
+    .features { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; }
+    .features li { padding-left: 22px; position: relative; }
+    .features li::before { content: "▸"; color: var(--accent); position: absolute; left: 0; }
+    pre {
+      background: var(--panel); border: 1px solid #313641; border-radius: 10px;
+      padding: 18px; overflow-x: auto; font-size: 0.9rem; color: var(--text);
+    }
+    .story p { color: #b9bec9; }
+    footer { text-align: center; color: var(--muted); padding: 48px 24px; border-top: 1px solid var(--panel); font-size: 0.9rem; }
+    @media (max-width: 600px) {
+      .features { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 1.9rem; }
+    }
+  </style>
 </head>
 <body>
-  <h1>NoteNest</h1>
-  <p>A lightweight, native macOS notes app - built from scratch in Swift.</p>
+  <header class="hero">
+    <img src="assets/icon.png" alt="NoteNest app icon">
+    <h1>NoteNest</h1>
+    <p class="tagline">A lightweight, native macOS notes app — built from scratch in Swift.</p>
+    <a class="cta" href="#build">Build it yourself ↓</a>
+  </header>
+
+  <main class="wrap">
+    <section>
+      <h2>Screenshots</h2>
+      <div class="shot">Screenshot coming soon</div>
+    </section>
+
+    <section>
+      <h2>Features</h2>
+      <ul class="features">
+        <li>Sidebar list with an optional Sublime-style tab bar</li>
+        <li>The first line of a note is its title</li>
+        <li>Silent autosave + save-on-quit — never lose a thought</li>
+        <li>Dark "Andromeda" theme, JetBrains Mono</li>
+        <li>Instant delete, quick new-note (⌘N)</li>
+        <li>Plain <code>.md</code> files in <code>~/Notes</code> — yours forever</li>
+      </ul>
+    </section>
+
+    <section class="story">
+      <h2>Why I built it</h2>
+      <p>
+        I wanted a lightweight notes app I fully control — fast, native, no
+        clutter, and storing plain Markdown files I own. So I built one.
+        It started as a Python/PySide6 prototype, then I rebuilt it natively in
+        Swift and SwiftUI for a true Mac feel and instant launch.
+      </p>
+    </section>
+
+    <section id="build">
+      <h2>Build &amp; run</h2>
+      <p>NoteNest is built from source on macOS (requires the Xcode toolchain):</p>
+      <pre><code>git clone https://github.com/bryantbarzola/Notes.git
+cd Notes
+./scripts/build-app.sh</code></pre>
+      <p>That builds a release app bundle and opens it. Drag <code>NoteNest.app</code>
+      to your Applications folder to keep it.</p>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/bryantbarzola/Notes">View the source on GitHub →</a>
+  </footer>
 </body>
 </html>
