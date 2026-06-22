@@ -31,8 +31,7 @@ This builds a release binary, wraps it in `NoteNest.app`, and opens it.
 
 ## Scope
 Daily notes only — no search (yet), no markdown preview. Notes are plain `.md`
-files; the first line is the title. See the design specs in
-`docs/superpowers/specs/`.
+files; the first line is the title.
 
 ## Future enhancements (deferred)
 Planned, not yet built — captured here so the roadmap lives with the code:

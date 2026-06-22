@@ -9,3 +9,4 @@ logs/
 NoteNest.app/
 *.xcodeproj
 .worktrees/
+docs/superpowers/
