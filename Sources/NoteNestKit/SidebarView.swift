@@ -22,7 +22,7 @@ public struct SidebarView: View {
         VStack(spacing: 0) {
             HStack {
                 Text("Notes")
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(Theme.font(size: 11, weight: .semibold))
                     .foregroundColor(Theme.secondaryText)
                 Spacer()
                 Button(action: onNew) {
@@ -38,6 +38,7 @@ public struct SidebarView: View {
             List(selection: $selection) {
                 ForEach(store.notes) { note in
                     Text(note.title)
+                        .font(Theme.font(size: Theme.bodyFontSize))
                         .lineLimit(1)
                         .foregroundColor(Theme.foreground)
                         .tag(note.id)

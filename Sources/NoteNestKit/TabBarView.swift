@@ -32,7 +32,7 @@ public struct TabBarView: View {
                     HStack(spacing: 6) {
                         Text(title(id))
                             .lineLimit(1)
-                            .font(.system(size: 12))
+                            .font(Theme.font(size: 12))
                             .foregroundColor(isActive ? Theme.foreground : Theme.secondaryText)
                         Button {
                             onClose(id)

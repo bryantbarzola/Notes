@@ -9,7 +9,7 @@ public struct EditorView: View {
 
     public var body: some View {
         TextEditor(text: $text)
-            .font(.system(size: Theme.bodyFontSize, design: .monospaced))
+            .font(Theme.font(size: Theme.bodyFontSize))
             .foregroundColor(Theme.foreground)
             .scrollContentBackground(.hidden)
             .background(Theme.background)

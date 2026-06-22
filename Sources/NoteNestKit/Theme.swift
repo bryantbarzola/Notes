@@ -10,4 +10,13 @@ public enum Theme {
     public static let accent = Color(red: 0.15, green: 0.31, blue: 0.47)
     public static let titleFontSize: CGFloat = 22
     public static let bodyFontSize: CGFloat = 14
+
+    /// JetBrains Mono (Nerd Font variant installed locally) to match Ghostty.
+    /// `Font.custom` automatically falls back to the system font if unavailable,
+    /// so the app never breaks on a machine without it.
+    public static let fontName = "JetBrainsMonoNL Nerd Font"
+
+    public static func font(size: CGFloat, weight: Font.Weight = .regular) -> Font {
+        .custom(fontName, size: size).weight(weight)
+    }
 }
