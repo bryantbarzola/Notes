@@ -19,11 +19,4 @@ public final class Debouncer {
         lock.unlock()
         queue.asyncAfter(deadline: .now() + interval, execute: item)
     }
-
-    public func flushCancel() {
-        lock.lock()
-        workItem?.cancel()
-        workItem = nil
-        lock.unlock()
-    }
 }

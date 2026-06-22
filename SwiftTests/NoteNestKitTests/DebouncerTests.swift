@@ -23,20 +23,3 @@ import Foundation
     let finalCount = queue.sync { counter.value }
     #expect(finalCount == 1)
 }
-
-@Test func debouncerFlushCancelPreventsFire() async {
-    let queue = DispatchQueue(label: "debouncer.test2")
-    let debouncer = Debouncer(interval: 0.05, queue: queue)
-
-    final class Counter: @unchecked Sendable {
-        var value = 0
-    }
-    let counter = Counter()
-
-    debouncer.call { counter.value += 1 }
-    debouncer.flushCancel()
-    try? await Task.sleep(nanoseconds: 200_000_000)
-
-    let finalCount = queue.sync { counter.value }
-    #expect(finalCount == 0)
-}
