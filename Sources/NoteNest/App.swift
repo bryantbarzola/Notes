@@ -19,7 +19,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct NoteNestApp: App {
     @Environment(\.scenePhase) private var scenePhase
-    @AppStorage("showTabBar") private var showTabBar: Bool = false
+    @AppStorage("showTabBar") private var showTabBar: Bool = true
     @StateObject private var store = NotesStore(folder: NotesStore.defaultFolder())
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 

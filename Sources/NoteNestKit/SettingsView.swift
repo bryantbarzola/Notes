@@ -1,7 +1,7 @@
 import SwiftUI
 
 public struct SettingsView: View {
-    @AppStorage("showTabBar") private var showTabBar: Bool = false
+    @AppStorage("showTabBar") private var showTabBar: Bool = true
 
     public init() {}
 
